@@ -1,12 +1,21 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Port Moody Population Pyramids: 1996 vs. 2021</title>
 <style>
-  .chart-title { font-size: 17px; font-weight: 500; color: var(--color-text-primary); margin: 1rem 0 2px; }
-  .chart-sub { font-size: 13px; color: var(--color-text-secondary); margin: 0 0 12px; }
-  .chart-label { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin: 1.5rem 0 4px; }
-  .legend { display: flex; gap: 20px; font-size: 12px; color: var(--color-text-secondary); margin: 8px 0 0; }
+  body { font-family: system-ui, sans-serif; margin: 2rem; background: #fff; color: #1a1a1a; }
+  .chart-title { font-size: 17px; font-weight: 500; margin: 0 0 2px; }
+  .chart-sub { font-size: 13px; color: #666; margin: 0 0 12px; }
+  .chart-label { font-size: 13px; font-weight: 500; margin: 1.5rem 0 4px; }
+  .legend { display: flex; gap: 20px; font-size: 12px; color: #555; margin: 8px 0 0; }
   .legend span { display: flex; align-items: center; gap: 5px; }
   .swatch { width: 10px; height: 10px; border-radius: 2px; }
+  .source { font-size: 11px; color: #aaa; margin-top: 8px; }
 </style>
+</head>
+<body>
 
 <p class="chart-title">Port Moody population pyramids: 1996 vs. 2021</p>
 <p class="chart-sub">Males (left) | Females (right)</p>
@@ -26,7 +35,7 @@
   <canvas id="chart2021"></canvas>
 </div>
 
-<p style="font-size:11px; color:var(--color-text-tertiary); margin-top:8px;">Data: Statistics Canada Census</p>
+<p class="source">Data: Statistics Canada Census</p>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
@@ -126,3 +135,5 @@ function makeChart(id, year) {
 makeChart('chart1996', 1996);
 makeChart('chart2021', 2021);
 </script>
+</body>
+</html>
