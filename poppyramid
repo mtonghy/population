@@ -1,0 +1,128 @@
+
+<style>
+  .chart-title { font-size: 17px; font-weight: 500; color: var(--color-text-primary); margin: 1rem 0 2px; }
+  .chart-sub { font-size: 13px; color: var(--color-text-secondary); margin: 0 0 12px; }
+  .chart-label { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin: 1.5rem 0 4px; }
+  .legend { display: flex; gap: 20px; font-size: 12px; color: var(--color-text-secondary); margin: 8px 0 0; }
+  .legend span { display: flex; align-items: center; gap: 5px; }
+  .swatch { width: 10px; height: 10px; border-radius: 2px; }
+</style>
+
+<p class="chart-title">Port Moody population pyramids: 1996 vs. 2021</p>
+<p class="chart-sub">Males (left) | Females (right)</p>
+
+<div class="legend">
+  <span><span class="swatch" style="background:#E8622A;"></span>Female</span>
+  <span><span class="swatch" style="background:#3A7EC6;"></span>Male</span>
+</div>
+
+<p class="chart-label">1996</p>
+<div style="position:relative; width:100%; height:760px;">
+  <canvas id="chart1996"></canvas>
+</div>
+
+<p class="chart-label">2021</p>
+<div style="position:relative; width:100%; height:760px;">
+  <canvas id="chart2021"></canvas>
+</div>
+
+<p style="font-size:11px; color:var(--color-text-tertiary); margin-top:8px;">Data: Statistics Canada Census</p>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const ageGroups = ['85+','80-84','75-79','70-74','65-69','60-64','55-59','50-54','45-49','40-44','35-39','30-34','25-29','20-24','15-19','10-14','5-9','0-4'];
+
+const data = {
+  1996: {
+    male:   [-30,-50,-90,-190,-225,-340,-480,-605,-865,-960,-1050,-1015,-755,-600,-645,-750,-810,-850],
+    female: [ 60, 105, 105, 205, 225, 305, 450, 630, 815, 990, 1170, 1060, 785, 630, 675, 765, 750, 810]
+  },
+  2021: {
+    male:   [-180,-275,-410,-615,-780,-1055,-1270,-1290,-1300,-1175,-1200,-1145,-880,-925,-1060,-1115,-950,-835],
+    female: [ 230, 305, 495, 670, 880, 1145, 1365, 1440, 1420, 1385, 1280, 1160, 860, 820, 995, 975, 880, 755]
+  }
+};
+
+const maxVal = 1600;
+
+function makeChart(id, year) {
+  const ctx = document.getElementById(id).getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ageGroups,
+      datasets: [
+        {
+          label: 'Male',
+          data: data[year].male,
+          backgroundColor: '#3A7EC6',
+          borderWidth: 0,
+          barPercentage: 0.85,
+          categoryPercentage: 0.9
+        },
+        {
+          label: 'Female',
+          data: data[year].female,
+          backgroundColor: '#E8622A',
+          borderWidth: 0,
+          barPercentage: 0.85,
+          categoryPercentage: 0.9
+        }
+      ]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => {
+              const v = Math.abs(ctx.raw);
+              return `${ctx.dataset.label}: ${v.toLocaleString()}`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          min: -maxVal,
+          max: maxVal,
+          stacked: false,
+          grid: { color: 'rgba(128,128,128,0.15)' },
+          border: { dash: [4,4] },
+          ticks: {
+            color: '#888',
+            font: { size: 11 },
+            callback: (v) => Math.abs(v).toLocaleString()
+          },
+          title: {
+            display: true,
+            text: 'Population count',
+            color: '#888',
+            font: { size: 12 }
+          }
+        },
+        y: {
+          stacked: false,
+          grid: { display: false },
+          ticks: {
+            color: '#888',
+            font: { size: 11 }
+          },
+          title: {
+            display: true,
+            text: 'Age group',
+            color: '#888',
+            font: { size: 12 }
+          }
+        }
+      }
+    }
+  });
+}
+
+makeChart('chart1996', 1996);
+makeChart('chart2021', 2021);
+</script>
